@@ -24,7 +24,7 @@ copyright = "2024 Tnze"
 category = "Game"
 shortDescription = "FF14 Crafting Simulator & Solver."
 longDescription = "A software for FFXIV crafting simulation and auto solving with friendly UI."
-createUpdaterArtifacts = "v1Compatible"
+# createUpdaterArtifacts = "v1Compatible"
 
 [bundle.windows]
 digestAlgorithm = "sha256"

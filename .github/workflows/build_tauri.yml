@@ -13,9 +13,9 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - platform: 'macos-latest' # for Arm based macs (M1 and above).
-                      args: '--target aarch64-apple-darwin'
-                      tauri_platform_name: 'darwin-aarch64'
+                    # - platform: 'macos-latest' # for Arm based macs (M1 and above).
+                    #   args: '--target aarch64-apple-darwin'
+                    #   tauri_platform_name: 'darwin-aarch64'
                     - platform: 'ubuntu-22.04'
                       args: ''
                       tauri_platform_name: 'linux-x86_64'
@@ -25,7 +25,7 @@ jobs:
                     - platform: 'windows-latest'
                       args: '--target aarch64-pc-windows-msvc'
                       tauri_platform_name: 'windows-aarch64'
-        environment: UpdaterSigner
+        environment: ${{ secrets.TAURI_PRIVATE_KEY && 'UpdaterSigner' || '' }}
         runs-on: ${{ matrix.platform }}
         steps:
             - uses: actions/checkout@v4
@@ -50,14 +50,14 @@ jobs:
               id: tauri_build
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-                  TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-                  APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-                  APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-                  APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-                  APPLE_ID: ${{ secrets.APPLE_ID }}
-                  APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-                  APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+                  TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY || '' }}
+                  TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD || '' }}
+                  APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE || '' }}
+                  APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD || '' }}
+                  APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY || '' }}
+                  APPLE_ID: ${{ secrets.APPLE_ID || '' }}
+                  APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD || '' }}
+                  APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || '' }}
               with:
                   tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
                   releaseName: 'BestCraft v__VERSION__'
