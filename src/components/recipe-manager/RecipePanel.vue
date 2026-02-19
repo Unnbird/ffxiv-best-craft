@@ -51,6 +51,9 @@ import {
 import useSettingsStore from '@/stores/settings';
 import { useMediaQuery } from '@vueuse/core';
 import ConfirmDialog from './ConfirmDialog.vue';
+import * as OpenCC from 'opencc-js';
+
+const t2sConverter = OpenCC.Converter({ from: 'tw', to: 'cn' });
 
 const emit = defineEmits<{
     (e: 'setTitle', title: string): void;
@@ -97,7 +100,7 @@ async function updateRecipePage(
     try {
         let promise = dataSource.recipeTable(
             pageNumber,
-            searching,
+            searching ? t2sConverter(searching) : searching,
             filterRecipeLevel.value,
             filterCraftType.value,
             filterLevel.value ? filterLevel.value * 10 - 9 : undefined,
